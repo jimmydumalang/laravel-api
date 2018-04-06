@@ -94,7 +94,7 @@ class RegisterController extends Controller
                     'status' => $this->statusCode->badRequest(),
                     'message' => 'BAD REQUEST',
                 ],
-            ]);
+            ])->setStatusCode($this->statusCode->badRequest());
         }
 
         $register = $this->create($data);
@@ -103,6 +103,7 @@ class RegisterController extends Controller
             return new UserResource($register);
         }
 
-        return response()->json(null)->setStatusCode($this->statusCode->inServerError(), 'Something went wrong');
+        return response()->json(null)
+            ->setStatusCode($this->statusCode->inServerError(), 'Something went wrong');
     }
 }
