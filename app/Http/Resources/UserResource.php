@@ -31,8 +31,8 @@ class UserResource extends JsonResource
     {
         return [
             'response' => [
-                'status' => '204',
-                'message' => 'CREATED',
+                'status' => '201',
+                'message' => 'Created',
             ],
         ];
     }

@@ -100,7 +100,7 @@ class RegisterController extends Controller
         $register = $this->create($data);
 
         if ($register) {
-            return new UserResource($register);
+            return (new UserResource($register))->response();
         }
 
         return response()->json(null)
