@@ -90,7 +90,7 @@ class RegisterController extends Controller
                     'body' => 'Data body not acceptable'
                 ],
                 'response' => [
-                    'status' => $this->statusCode->badRequest(),
+                    'status' => (string) $this->statusCode->badRequest(),
                     'message' => 'Bad Request',
                 ],
             ])->setStatusCode($this->statusCode->badRequest());
@@ -104,7 +104,7 @@ class RegisterController extends Controller
             return response()->json([
                 'errors' => $validator->errors(),
                 'response' => [
-                    'status' => $this->statusCode->badRequest(),
+                    'status' => (string) $this->statusCode->badRequest(),
                     'message' => 'Bad Request',
                 ],
             ])->setStatusCode($this->statusCode->badRequest());
@@ -113,7 +113,12 @@ class RegisterController extends Controller
         $register = $this->create($data);
 
         if ($register) {
-            return (new UserResource($register))->response();
+            return (new UserResource($register))->additional([
+                'response' => [
+                    'code' => (string) $this->statusCode->created(),
+                    'message' => 'Created',
+                ]
+            ]);
         }
 
         return response()->json([

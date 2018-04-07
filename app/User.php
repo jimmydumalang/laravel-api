@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -25,10 +25,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'name', 'password', 'remember_token',
+        'password', 'remember_token',
     ];
 
-    public function findForPassport($username) {
+    public function findForPassport($username)
+    {
         return $this->where('phone', $username)->first();
     }
 }
