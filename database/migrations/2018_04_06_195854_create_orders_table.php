@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
+            $table->uuid('uuid');
             $table->string('reference',50);
             $table->enum('type', ['PLA','PAL','PLL']);
             $table->string('origin_name', 50);

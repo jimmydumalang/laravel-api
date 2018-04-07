@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Uuid;
 
 class Order extends Model
 {
@@ -14,6 +15,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
+        'uuid',
         'reference',
         'type',
         'origin_name',
@@ -30,4 +32,13 @@ class Order extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->uuid = (string)Uuid::generate(4);
+        });
+    }
+
 }

@@ -16,6 +16,7 @@ class order extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->uuid,
             'reference' => $this->reference,
             'type' => $this->type,
             'origin_name' => $this->origin_name,
