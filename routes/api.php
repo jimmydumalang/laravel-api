@@ -14,3 +14,11 @@ use Illuminate\Http\Request;
 */
 
 Route::post('/register', 'Auth\RegisterController@register');
+
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::get('/user', function (Request $request) {
+        return (new App\Http\Resources\UserResource($request->user()))->response();
+    });
+    Route::get('/orders', 'OrderController@index');
+    Route::post('/orders', 'OrderController@store');
+});

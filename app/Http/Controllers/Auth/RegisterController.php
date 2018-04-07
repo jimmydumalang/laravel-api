@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\User;
+use App\Utilities\StatusCode;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use App\Utilities\StatusCode;
-use App\Http\Resources\UserResource;
 
 class RegisterController extends Controller
 {
@@ -83,6 +83,19 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+
+        if (!$request->isJson()) {
+            return response()->json([
+                'errors' => [
+                    'body' => 'Data body not acceptable'
+                ],
+                'response' => [
+                    'status' => $this->statusCode->badRequest(),
+                    'message' => 'Bad Request',
+                ],
+            ])->setStatusCode($this->statusCode->badRequest());
+        }
+
         $data = $request->all();
 
         $validator = $this->validator($data);
@@ -92,7 +105,7 @@ class RegisterController extends Controller
                 'errors' => $validator->errors(),
                 'response' => [
                     'status' => $this->statusCode->badRequest(),
-                    'message' => 'BAD REQUEST',
+                    'message' => 'Bad Request',
                 ],
             ])->setStatusCode($this->statusCode->badRequest());
         }
@@ -103,7 +116,14 @@ class RegisterController extends Controller
             return (new UserResource($register))->response();
         }
 
-        return response()->json(null)
-            ->setStatusCode($this->statusCode->inServerError(), 'Something went wrong');
+        return response()->json([
+            'response' => [
+                'status' => $this->statusCode->inServerError(),
+                'message' => 'Something went wrong',
+            ],
+        ])->setStatusCode(
+            $this->statusCode->inServerError(),
+            'Something went wrong'
+        );
     }
 }
